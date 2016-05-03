@@ -34,8 +34,14 @@ prot <- read.delim(protein, header=F)
 ndwithdata <- nd[which(nd[,1] %in% prot[,1]),]
 ndwithoutdata <- nd[!(nd[,1] %in% prot[,1]),]
 ndwithdata$domain <- "NONE"
-ndwithoutdata$domain <- "NA"
-ndf <- rbind(ndwithdata, ndwithoutdata)
+
+if(nrow(ndwithoutdata) == 0){
+        ndf <- ndwithdata
+} else {
+        ndwithoutdata$domain <- "NA"
+        ndf <- rbind(ndwithdata, ndwithoutdata)
+}
+
 ndf$id <- paste(ndf$V1, ndf$V2, sep="|")
 ndf <- ndf[,c("id", "domain")]
 
